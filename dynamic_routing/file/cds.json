@@ -1,0 +1,31 @@
+{
+  "version_info": "0",
+  "resources": [
+    {
+      "@type": "type.googleapis.com/envoy.api.v2.Cluster",
+      "name": "service1",
+      "connect_timeout": "0.25s",
+      "lb_policy": "ROUND_ROBIN",
+      "type": "EDS",
+      "eds_cluster_config": {
+        "service_name": "service",
+        "eds_config": {
+          "path": "/etc/envoy/eds1.json"
+        }
+      }
+    },
+    {
+      "@type": "type.googleapis.com/envoy.api.v2.Cluster",
+      "name": "service2",
+      "connect_timeout": "0.25s",
+      "lb_policy": "ROUND_ROBIN",
+      "type": "EDS",
+      "eds_cluster_config": {
+        "service_name": "service",
+        "eds_config": {
+          "path": "/etc/envoy/eds2.json"
+        }
+      }
+    }
+  ]
+}

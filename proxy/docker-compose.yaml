@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  proxy:
+    image: envoy
+    volumes:
+    - ./envoy.yaml:/etc/envoy/envoy.yaml
+    networks:
+    - envoy
+    ports:
+    - '8001:8001'
+    - '8080:8080'
+  service1:
+    image: kennethreitz/httpbin
+    networks:
+    - envoy
+  service2:
+    image: kennethreitz/httpbin
+    networks:
+    - envoy
+  service3:
+    image: kennethreitz/httpbin
+    networks:
+    - envoy
+networks:
+  envoy:
+    name: envoy

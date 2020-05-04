@@ -1,0 +1,50 @@
+version: '3.7'
+services:
+  envoy:
+    container_name: envoy
+    image: envoy
+    volumes:
+    - ./envoy.yaml:/etc/envoy/envoy.yaml
+    networks:
+    - envoy
+    ports:
+    - '8001:8001'
+    - '8080:8080'
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+    - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+    - envoy
+    ports:
+    - '9090:9090'
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    networks:
+    - envoy
+    ports:
+    - '3000:3000'
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one
+    environment:
+    - COLLECTOR_ZIPKIN_HTTP_PORT=9941
+    networks:
+    - envoy
+    ports:
+    - '16686:16686'
+  service1:
+    container_name: service1
+    image: katacoda/docker-http-server:healthy
+    networks:
+    - envoy
+  service2:
+    container_name: service2
+    image: katacoda/docker-http-server:healthy
+    networks:
+    - envoy
+networks:
+  envoy:
+    name: envoy

@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  envoy:
+    container_name: envoy
+    image: envoy
+    volumes:
+    - ./envoy.yaml:/etc/envoy/envoy.yaml
+    networks:
+    - envoy
+    ports:
+    - '8001:8001'
+    - '8080:8080'
+  service1:
+    container_name: service1
+    image: katacoda/docker-http-server:healthy
+    networks:
+    - envoy
+  service2:
+    container_name: service2
+    image: katacoda/docker-http-server:healthy
+    networks:
+    - envoy
+networks:
+  envoy:
+    name: envoy

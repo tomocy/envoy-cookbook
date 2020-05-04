@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  envoy:
+    container_name: envoy
+    image: envoy
+    volumes:
+    - ./envoy.yaml:/etc/envoy/envoy.yaml
+    - ./lds.yaml:/etc/envoy/lds.yaml
+    - ./cds.yaml:/etc/envoy/cds.yaml
+    - ./eds.yaml:/etc/envoy/eds.yaml
+    networks:
+    - envoy
+    ports:
+    - '8001:8001'
+    - '8080:8080'
+  service1:
+    container_name: service1
+    image: kennethreitz/httpbin
+    networks:
+    - envoy
+  service2:
+    container_name: service2
+    image: kennethreitz/httpbin
+    networks:
+    - envoy
+networks:
+  envoy:
+    name: envoy

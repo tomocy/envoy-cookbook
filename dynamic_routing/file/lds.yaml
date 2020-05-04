@@ -1,0 +1,26 @@
+version_info: '0'
+resources:
+- '@type': type.googleapis.com/envoy.api.v2.Listener
+  name: http
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8080
+  filter_chains:
+  - filters:
+    - name: envoy.filters.network.http_connection_manager
+      typed_config:
+        '@type': type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager
+        stat_prefix: ingress_http
+        route_config:
+          virtual_hosts:
+          - name: backend
+            domains:
+            - '*'
+            routes:
+            - match:
+                prefix: /
+              route:
+                cluster: service
+        http_filters:
+        - name: envoy.filters.http.router

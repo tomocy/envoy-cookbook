@@ -1,0 +1,9 @@
+version_info: '0'
+resources:
+- '@type': type.googleapis.com/envoy.api.v2.Cluster
+  name: service
+  type: EDS
+  connect_timeout: 0.25s
+  eds_cluster_config:
+    eds_config:
+      path: /etc/envoy/eds.yaml

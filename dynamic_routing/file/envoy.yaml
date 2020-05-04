@@ -1,6 +1,6 @@
 node:
   id: '1'
-  cluster: service
+  cluster: cluster
 admin:
   access_log_path: /tmp/admin_access.log
   address:
@@ -9,6 +9,6 @@ admin:
       port_value: 8001
 dynamic_resources:
   lds_config:
-    path: /etc/envoy/lds.json
+    path: /etc/envoy/lds.yaml
   cds_config:
-    path: /etc/envoy/cds.json
+    path: /etc/envoy/cds.yaml

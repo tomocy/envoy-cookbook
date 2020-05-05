@@ -1,10 +1,38 @@
 #!/bin/bash
 
-echo 'Generate server key, which is often of CA priavte key'
-openssl genrsa 2048 > server.key
+echo 'Generate CA certificate'
+mkdir ca
 
-echo 'Create CSR'
-openssl req -new -key server.key > server.csr
+openssl genrsa 4096 > ca/ca.key
 
-echo 'Sign the CSR with its private key, which is also of the private key of the subject'
-openssl x509 -req -signkey server.key < server.csr > server.crt
+openssl req \
+-new \
+-key ca/ca.key \
+-subj '/CN=ca.example.local' \
+> ca/ca.csr
+
+openssl x509 \
+-req \
+-signkey ca/ca.key \
+< ca/ca.csr \
+> ca/ca.crt
+
+echo ''
+echo 'Generate server certificate signed by the CA'
+mkdir server
+
+openssl genrsa 2096 > server/server.key
+
+openssl req \
+-new \
+-key server/server.key \
+-subj '/CN=server.example.local' \
+> server/server.csr
+
+openssl x509 \
+-req \
+-CA ca/ca.crt \
+-CAkey ca/ca.key \
+-CAcreateserial \
+< server/server.csr \
+> server/server.crt
